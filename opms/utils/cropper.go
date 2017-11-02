@@ -1,15 +1,24 @@
 package utils
 
 import (
+	//"fmt"
+	//"graphics"
 	"image"
 	"image/jpeg"
 	"log"
+	//"net/http"
 	"os"
+	//"strconv"
 	"strings"
 
+	//"code.google.com/p/graphics-go/graphics"
 	"github.com/BurntSushi/graphics-go/graphics"
 )
 
+//http://studygolang.com/articles/3375
+//http://studygolang.com/articles/4307
+//http://studygolang.com/articles/2581
+//http://studygolang.com/articles/2453
 func DoImageHandler(url string, newdx int) {
 	src, err := LoadImage("." + url)
 	//bound := src.Bounds()

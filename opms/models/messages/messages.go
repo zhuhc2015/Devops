@@ -2,8 +2,8 @@ package messages
 
 import (
 	//"fmt"
-	"github.com/Devops/opms/models"
-	//"github.com/Devops/opms/utils"
+	"opms/models"
+	//"opms/utils"
 	"time"
 
 	"github.com/astaxie/beego"
@@ -11,7 +11,7 @@ import (
 )
 
 type Messages struct {
-	Id       int64 `orm:"pk;column(msgid)"`
+	Id       int64 `orm:"pk;column(msgid);"`
 	Userid   int64
 	Touserid int64
 	Type     int
@@ -25,7 +25,6 @@ type Messages struct {
 func (this *Messages) TableName() string {
 	return models.TableName("messages")
 }
-
 func init() {
 	orm.RegisterModel(new(Messages))
 }
@@ -46,7 +45,6 @@ func AddMessages(upd Messages) error {
 	msg.Created = time.Now().Unix()
 	_, err := o.Insert(msg)
 	return err
-
 }
 
 func ListMessages(condArr map[string]string, page int, offset int) (num int64, err error, msg []Messages) {
@@ -119,6 +117,6 @@ func ChangeMessagesStatusAll(touserid int64) error {
 
 func DeleteMessages(ids string) error {
 	o := orm.NewOrm()
-	_, err := o.Raw("DELETE FORM" + models.TableName("messages") + "WHERE msgid IN(" + ids + ")").Exec()
+	_, err := o.Raw("DELETE FROM " + models.TableName("messages") + " WHERE msgid IN(" + ids + ")").Exec()
 	return err
 }

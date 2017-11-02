@@ -2,8 +2,8 @@ package users
 
 import (
 	"fmt"
-	"github.com/Devops/opms/models"
-	"github.com/Devops/opms/utils"
+	"opms/models"
+	"opms/utils"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -133,8 +133,3 @@ func ChangePositionStatus(id int64, status int) error {
 		return err
 	}
 }
-package users
-
-import (
-	""
-)

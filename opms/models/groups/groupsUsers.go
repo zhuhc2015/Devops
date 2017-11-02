@@ -2,8 +2,8 @@ package groups
 
 import (
 	"fmt"
-	"github.com/Devops/opms/models"
-	"github.com/Devops/opms/utils"
+	"opms/models"
+	"opms/utils"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"

@@ -2,8 +2,8 @@ package groups
 
 import (
 	"fmt"
-	"github.com/Devops/opms/models"
-	"github.com/Devops/opms/utils"
+	"opms/models"
+	"opms/utils"
 	"time"
 
 	"github.com/astaxie/beego"
@@ -76,6 +76,18 @@ func ListGroup(condArr map[string]string, page int, offset int) (num int64, err 
 	return num, errs, group
 }
 
+func CountGroup(condArr map[string]string) int64 {
+	o := orm.NewOrm()
+	qs := o.QueryTable(models.TableName("groups"))
+	cond := orm.NewCondition()
+
+	if condArr["keywords"] != "" {
+		cond = cond.And("name__icontains", condArr["keywords"])
+	}
+	num, _ := qs.SetCond(cond).Count()
+	return num
+}
+
 func GetGroup(id int64) (Groups, error) {
 	var group Groups
 	var err error
@@ -93,6 +105,6 @@ func GetGroup(id int64) (Groups, error) {
 
 func DeleteGroup(ids string) error {
 	o := orm.NewOrm()
-	_, err := o.Raw("Delete FROM" + models.TableName("groups") + " WHERE groupid IN(" + ids + ")").Exec()
+	_, err := o.Raw("DELETE FROM " + models.TableName("groups") + " WHERE groupid IN(" + ids + ")").Exec()
 	return err
 }

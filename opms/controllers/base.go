@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	//"opms/initial"
+
 	"fmt"
-	. "github.com/Devops/opms/models/groups"
-	. "github.com/Devops/opms/models/messages"
+	. "opms/models/groups"
+	. "opms/models/messages"
 	"strconv"
 	"strings"
 
@@ -36,6 +38,9 @@ func (this *BaseController) Prepare() {
 		this.UserUserId = longid
 		this.UserUsername = tmp[1]
 		this.UserAvatar = tmp[2]
+
+		//this.Data["PermissionModel"] = this.GetSession("userPermissionModel")
+		//this.Data["PermissionModelc"] = this.GetSession("userPermissionModelc")
 
 		//消息
 		msgcondArr := make(map[string]string)

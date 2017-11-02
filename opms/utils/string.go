@@ -47,7 +47,7 @@ func RandInt64(min, max int64) int64 {
 
 func Strim(str string) string {
 	str = strings.Replace(str, "\t", "", -1)
-	str = strings.Replace(str, "", "", -1)
+	str = strings.Replace(str, " ", "", -1)
 	str = strings.Replace(str, "\n", "", -1)
 	str = strings.Replace(str, "\r", "", -1)
 	return str
@@ -60,7 +60,7 @@ func Unicode(rs string) string {
 		if rint < 128 {
 			json += string(r)
 		} else {
-			json += "\\" + strconv.FormatInt(int64(rint), 16)
+			json += "\\u" + strconv.FormatInt(int64(rint), 16)
 		}
 	}
 	return json
@@ -74,6 +74,11 @@ func HTMLEncode(rs string) string {
 	return html
 }
 
+/**
+ *  to: example@example.com;example1@163.com;example2@sina.com.cn;...
+ *  subject:The subject of mail
+ *  body: The content of mail
+ */
 func SendMail(to string, subject string, body string) error {
 	user := beego.AppConfig.String("mailfrom")
 	password := beego.AppConfig.String("mailpassword")

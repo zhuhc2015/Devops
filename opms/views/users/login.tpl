@@ -16,7 +16,6 @@
     <div class="login-wrap">
       <input type="text" class="form-control" name="username" placeholder="请填写用户名" autofocus>
       <input type="password" class="form-control" name="password" placeholder="请填写密码">
-      <p>加QQ群（451420312）获取用户和密码</p>
 	<button class="btn btn-lg btn-login btn-block" type="submit"> 登录</button>
     </div>
   </form>

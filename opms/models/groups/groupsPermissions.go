@@ -2,8 +2,8 @@ package groups
 
 import (
 	"fmt"
-	"github.com/Devops/opms/models"
-	"github.com/Devops/opms/utils"
+	"opms/models"
+	"opms/utils"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -23,7 +23,7 @@ func init() {
 	orm.RegisterModel(new(GroupsPermission))
 }
 
-func AddGroupPermission(upd GroupsPermission) error {
+func AddGroupsPermission(upd GroupsPermission) error {
 	o := orm.NewOrm()
 	permission := new(GroupsPermission)
 
@@ -34,15 +34,14 @@ func AddGroupPermission(upd GroupsPermission) error {
 	return err
 }
 
-func DeleteGroupPermission(id int64) error {
+func DeleteGroupsPermission(id int64) error {
 	o := orm.NewOrm()
 	_, err := o.Raw("DELETE FROM "+models.TableName("groups_permission")+" WHERE id = ?", id).Exec()
 	return err
 }
-
-func DeleteGroupPermissionForGroupid(groupid int64) error {
+func DeleteGroupsPermissionForGroupid(groupid int64) error {
 	o := orm.NewOrm()
-	_, err := o.Raw("DELETE FROM"+models.TableName("groups_permission")+"WHERE group = ?", groupid).Exec()
+	_, err := o.Raw("DELETE FROM "+models.TableName("groups_permission")+" WHERE groupid = ?", groupid).Exec()
 	return err
 }
 

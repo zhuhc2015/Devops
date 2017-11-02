@@ -1,30 +1,31 @@
-package models
+package users
 
 import (
 	"fmt"
-	"github.com/Devops/opms/models"
-	"github.com/Devops/opms/utils"
+	"math/rand"
+	"opms/models"
+	"opms/utils"
+	"time"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"math/rand"
-	"time"
 )
 
-type User struct {
+type Users struct {
 	Id       int64         `orm:"pk;column(userid);"`
 	Profile  *UsersProfile `orm:"rel(one);"`
-	UserName string
+	Username string
 	Password string
 	Avatar   string
 	Status   int
 }
 
-type UserProfile struct {
-	Id       int64 `orm:"pk;column(userid)"`
-	Realname string
-	Sex      int
-	Birth    string
-	Email    string
+type UsersProfile struct {
+	Id          int64 `orm:"pk;column(userid);"`
+	Realname    string
+	Sex         int
+	Birth       string
+	Email       string
 	Webchat     string
 	Qq          string
 	Phone       string
@@ -39,15 +40,15 @@ type UserProfile struct {
 	Lasted      int64
 }
 
-}
-
 func (this *Users) TableName() string {
 	return models.TableName("users")
 }
 
 func init() {
+	//orm.RegisterModel(new(Users), new(UsersProfile))
 	orm.RegisterModel(new(Users))
-	orm.RegisterModelWithPrefix("pms_", new(UserProfile))
+	//orm.RegisterModelWithPrefix("pms_", new(Users))
+	orm.RegisterModelWithPrefix("pms_", new(UsersProfile))
 }
 
 //登录
@@ -66,38 +67,50 @@ func LoginUser(username, password string) (err error, user Users) {
 	err = qs.Limit(1).One(&users, "userid", "username", "avatar")
 	fmt.Println(err)
 	if err == nil {
-		o.Raw("UPDATE pms_users SET lasted = ?,lognum=lognum+? WHERE userid = ?", time.Now().Unix(), 1, users.Id).Exec()
+		o.Raw("UPDATE pms_users_profile SET lasted = ?,lognum=lognum+? WHERE userid = ?", time.Now().Unix(), 1, users.Id).Exec()
 	}
 	return err, users
 }
 
-
 //得到用户信息
 func GetUser(id int64) (Users, error) {
-	var users  Users
-	var err  error
+	var user Users
+	var err error
 	o := orm.NewOrm()
 
 	user = Users{Id: id}
 	err = o.Read(&user)
 
-	if err == orm.ErrNoRows{
+	if err == orm.ErrNoRows {
 		return user, nil
 	}
 	return user, err
-
 }
-
 
 func GetRealname(id int64) string {
 	var err error
 	var realname string
-	
+
+	err = utils.GetCache("GetRealname.id."+fmt.Sprintf("%d", id), &realname)
+	if err != nil {
+		cache_expire, _ := beego.AppConfig.Int("cache_expire")
+		var user UsersProfile
+		o := orm.NewOrm()
+		o.QueryTable(models.TableName("users_profile")).Filter("userid", id).One(&user, "realname")
+		realname = user.Realname
+		utils.SetCache("GetRealname.id."+fmt.Sprintf("%d", id), realname, cache_expire)
+	}
+	return realname
+}
+
+func GetUserEmail(id int64) string {
+	var err error
+	var email string
 
 	err = utils.GetCache("GetUserEmail.id."+fmt.Sprintf("%d", id), &email)
 	if err != nil {
 		cache_expire, _ := beego.AppConfig.Int("cache_expire")
-		var user UserProfile
+		var user UsersProfile
 		o := orm.NewOrm()
 		o.QueryTable(models.TableName("users_profile")).Filter("userid", id).One(&user, "email")
 		email = user.Email
@@ -105,7 +118,6 @@ func GetRealname(id int64) string {
 	}
 	return email
 }
-
 
 func GetAvatarUserid(id int64) string {
 	var err error

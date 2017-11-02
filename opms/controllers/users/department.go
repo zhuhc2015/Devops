@@ -2,31 +2,14 @@ package users
 
 import (
 	"fmt"
-	"github.com/Devops/opms/controllers"
-	. "github.com/Devops/opms/models/groups"
-
-	. "github.com/Devops/opms/models/users"
-	"github.com/Devops/opms/utils"
+	"opms/controllers"
+	. "opms/models/users"
+	"opms/utils"
 	"strconv"
 	"strings"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/utils/pagination"
-	"github.com/oliamb/cutter"
-)
-
-package users
-
-import (
-"fmt"
-"opms/controllers"
-. "opms/models/users"
-"opms/utils"
-"strconv"
-"strings"
-
-"github.com/astaxie/beego"
-"github.com/astaxie/beego/utils/pagination"
 )
 
 //用户管理
@@ -82,7 +65,7 @@ func (this *AjaxStatusDepartmentController) Post() {
 	}
 	id, _ := this.GetInt64("id")
 	if id <= 0 {
-		this.Data["json"] = map[string]interface{}{"code": 0, "message": "请选择组"}
+		this.Data["json"] = map[string]interface{}{"code": 0, "message": "请选择部门"}
 		this.ServeJSON()
 		return
 	}
@@ -96,9 +79,9 @@ func (this *AjaxStatusDepartmentController) Post() {
 	err := ChangeDepartStatus(id, status)
 
 	if err == nil {
-		this.Data["json"] = map[string]interface{}{"code": 1, "message": "组状态更改成功"}
+		this.Data["json"] = map[string]interface{}{"code": 1, "message": "部门状态更改成功"}
 	} else {
-		this.Data["json"] = map[string]interface{}{"code": 0, "message": "组状态更改失败"}
+		this.Data["json"] = map[string]interface{}{"code": 0, "message": "部门状态更改失败"}
 	}
 	this.ServeJSON()
 }
@@ -138,9 +121,9 @@ func (this *AddDepartmentController) Post() {
 	err := AddDeparts(dep)
 
 	if err == nil {
-		this.Data["json"] = map[string]interface{}{"code": 1, "message": "组添加成功"}
+		this.Data["json"] = map[string]interface{}{"code": 1, "message": "部门添加成功"}
 	} else {
-		this.Data["json"] = map[string]interface{}{"code": 0, "message": "组添加失败"}
+		this.Data["json"] = map[string]interface{}{"code": 0, "message": "部门添加失败"}
 	}
 	this.ServeJSON()
 }
@@ -180,7 +163,7 @@ func (this *EditDepartmentController) Post() {
 	}
 	_, err := GetDeparts(id)
 	if err != nil {
-		this.Data["json"] = map[string]interface{}{"code": 0, "message": "组不存在"}
+		this.Data["json"] = map[string]interface{}{"code": 0, "message": "部门不存在"}
 		this.ServeJSON()
 		return
 	}

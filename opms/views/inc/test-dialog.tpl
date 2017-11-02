@@ -34,7 +34,7 @@
             <select id="cstatus" class="form-control">
               <option value="">解决方案</option>
               <option value="1">设计如此</option>
-              <option value="2">重复问题</option>
+              <option value="2">重复Bug</option>
               <option value="3">外部原因</option>
               <option value="4">已解决</option>
               <option value="5">无法重现</option>

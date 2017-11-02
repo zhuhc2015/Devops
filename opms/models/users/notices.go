@@ -1,7 +1,7 @@
 package users
 
 import (
-	"github.com/Devops/opms/models"
+	"opms/models"
 	"time"
 
 	"github.com/astaxie/beego"
